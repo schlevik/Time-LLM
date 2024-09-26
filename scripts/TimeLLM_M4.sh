@@ -7,8 +7,8 @@ learning_rate=0.001
 d_model=8
 d_ff=32
 
-master_port=00097
-num_process=8
+master_port=12345
+num_process=2
 
 comment='TimeLLM-M4'
 
