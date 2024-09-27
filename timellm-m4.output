@@ -1,0 +1,11 @@
+Epoch: 30 cost time: 2758.6540350914
+Epoch: 30, Steps: 1500 | Train Loss: 8.1569591 Vali Loss: 10.6798383 Test Loss: 10.6798383
+EarlyStopping counter: 20 out of 20
+Early stopping
+test shape: (24000, 8, 1)
+TimeLLM
+smape: {'Yearly': 13.498, 'Quarterly': 10.672, 'Monthly': 13.327, 'Others': 5.35, 'Average': 12.33}
+mape: {'Yearly': 16.554, 'Quarterly': 12.418, 'Monthly': 15.925, 'Others': 7.414, 'Average': 14.802}
+mase: {'Yearly': 3.013, 'Quarterly': 1.266, 'Monthly': 1.023, 'Others': 3.728, 'Average': 1.675}
+owa: {'Yearly': 0.792, 'Quarterly': 0.946, 'Monthly': 0.943, 'Others': 1.151, 'Average': 0.892}
+success delete checkpoints
