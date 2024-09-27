@@ -55,7 +55,7 @@ class Model(nn.Module):
                     config=self.llama_config,
                     # load_in_4bit=True
                 )
-            except EnvironmentError:  # downloads model from HF is not already done
+            except (EnvironmentError, AttributeError):  # downloads model from HF is not already done
                 print("Local model files not found. Attempting to download...")
                 self.llm_model = LlamaModel.from_pretrained(
                     # "/mnt/alps/modelhub/pretrained_model/LLaMA/7B_hf/",
@@ -72,7 +72,7 @@ class Model(nn.Module):
                     trust_remote_code=True,
                     local_files_only=True
                 )
-            except EnvironmentError:  # downloads the tokenizer from HF if not already done
+            except (EnvironmentError, AttributeError):  # downloads the tokenizer from HF if not already done
                 print("Local tokenizer files not found. Atempting to download them..")
                 self.tokenizer = LlamaTokenizer.from_pretrained(
                     # "/mnt/alps/modelhub/pretrained_model/LLaMA/7B_hf/tokenizer.model",
