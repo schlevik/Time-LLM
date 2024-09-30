@@ -43,6 +43,22 @@ def data_provider(args, flag):
             freq=freq,
             seasonal_patterns=args.seasonal_patterns
         )
+    elif args.aug:
+        print("Data aug...")
+        data_set = Data(
+            root_path=args.root_path,
+            data_path=args.data_path,
+            flag=flag,
+            size=[args.seq_len, args.label_len, args.pred_len],
+            features=args.features,
+            target=args.target,
+            timeenc=timeenc,
+            freq=freq,
+            percent=percent,
+            percent_aug=args.percent_aug,
+            aug=args.aug,
+            aug_only=args.aug_only
+        )
     else:
         data_set = Data(
             root_path=args.root_path,
@@ -58,8 +74,9 @@ def data_provider(args, flag):
         )
     data_loader = DataLoader(
         data_set,
-        batch_size=batch_size,
+        batch_size=min(batch_size, len(data_set)//4),
         shuffle=shuffle_flag,
         num_workers=args.num_workers,
         drop_last=drop_last)
+    print(flag, len(data_set))
     return data_set, data_loader

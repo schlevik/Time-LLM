@@ -2,13 +2,13 @@ model_name=TimeLLM
 
 train_epochs=50
 llama_layers=32
-batch_size=24
+batch_size=16
 learning_rate=0.001
 d_model=8
 d_ff=32
 
 master_port=12345
-num_process=2
+num_process=3
 
 comment='TimeLLM-M4'
 

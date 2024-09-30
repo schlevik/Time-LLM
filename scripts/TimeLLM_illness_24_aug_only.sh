@@ -4,7 +4,7 @@ learning_rate=0.01
 llama_layers=32
 
 master_port=12345
-num_process=1
+num_process=4
 batch_size=24
 d_model=16
 d_ff=32
@@ -21,7 +21,7 @@ accelerate launch --mixed_precision bf16 --num_processes $num_process --main_pro
   --data Illness \
   --features S \
   --seq_len 104 \
-  --label_len 24 \
+  --label_len 18 \
   --pred_len 24 \
   --e_layers 2 \
   --d_layers 1 \
@@ -35,4 +35,7 @@ accelerate launch --mixed_precision bf16 --num_processes $num_process --main_pro
   --learning_rate $learning_rate \
   --llm_layers $llama_layers \
   --train_epochs $train_epochs \
-  --model_comment $comment
+  --model_comment $comment \
+  --aug ili-clo-0_256_gen_100repeat.npy \
+  --percent_aug 10 \
+  --aug_only 1
