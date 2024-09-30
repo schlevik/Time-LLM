@@ -1,0 +1,1 @@
+The influenza-like illness (ILI) dataset contains records of patients experiencing severe influenza with complications.
