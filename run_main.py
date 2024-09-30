@@ -100,7 +100,7 @@ parser.add_argument('--percent', type=int, default=100)
 
 parser.add_argument('--percent_aug', type=int, default=100)
 parser.add_argument('--aug', type=str, default=None)
-parser.add_argument('--aug_only', type=int, default=1)
+parser.add_argument('--aug_only', type=int, default=0)
 
 args = parser.parse_args()
 ddp_kwargs = DistributedDataParallelKwargs(find_unused_parameters=True)
