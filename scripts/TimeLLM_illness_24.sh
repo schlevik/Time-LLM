@@ -21,7 +21,7 @@ accelerate launch --mixed_precision bf16 --num_processes $num_process --main_pro
   --data Illness \
   --features S \
   --seq_len 104 \
-  --label_len 24 \
+  --label_len 18 \
   --pred_len 24 \
   --e_layers 2 \
   --d_layers 1 \
