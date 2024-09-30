@@ -19,7 +19,7 @@ accelerate launch --mixed_precision bf16 --num_processes $num_process --main_pro
   --model_id weather_512_96 \
   --model $model_name \
   --data Illness \
-  --features S \
+  --features M \
   --seq_len 104 \
   --label_len 18 \
   --pred_len 24 \

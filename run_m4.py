@@ -1,4 +1,5 @@
 import argparse
+import json
 import torch
 from accelerate import Accelerator, DeepSpeedPlugin
 from accelerate import DistributedDataParallelKwargs
@@ -101,11 +102,19 @@ parser.add_argument('--use_amp', action='store_true', help='use automatic mixed 
 parser.add_argument('--llm_layers', type=int, default=6)
 parser.add_argument('--percent', type=int, default=100)
 
+parser.add_argument('--percent_aug', type=int, default=100)
+parser.add_argument('--aug', type=str, default=None)
+parser.add_argument('--aug_only', type=int, default=0)
+
 args = parser.parse_args()
 ddp_kwargs = DistributedDataParallelKwargs(find_unused_parameters=True)
 deepspeed_plugin = DeepSpeedPlugin(hf_ds_config='./ds_config_zero2.json')
 accelerator = Accelerator(kwargs_handlers=[ddp_kwargs], deepspeed_plugin=deepspeed_plugin)
 
+folder_path = f'./m4_results{"" if not args.aug_only else "_aug_only"}/' + args.model + '-' + args.model_comment + '/'
+file_path = folder_path
+if not os.path.exists(folder_path) and accelerator.is_local_main_process:
+    os.makedirs(folder_path)
 for ii in range(args.itr):
     # setting record of experiments
     setting = '{}_{}_{}_{}_ft{}_sl{}_ll{}_pl{}_dm{}_nh{}_el{}_dl{}_df{}_fc{}_eb{}_{}_{}'.format(
@@ -274,9 +283,7 @@ for ii in range(args.itr):
 
     accelerator.print('test shape:', preds.shape)
 
-    folder_path = './m4_results/' + args.model + '-' + args.model_comment + '/'
-    if not os.path.exists(folder_path) and accelerator.is_local_main_process:
-        os.makedirs(folder_path)
+ 
 
     if accelerator.is_local_main_process:
         forecasts_df = pandas.DataFrame(preds[:, :, 0], columns=[f'V{i + 1}' for i in range(args.pred_len)])
@@ -287,7 +294,6 @@ for ii in range(args.itr):
 
         # calculate metrics
         accelerator.print(args.model)
-        file_path = folder_path
         if 'Weekly_forecast.csv' in os.listdir(file_path) \
                 and 'Monthly_forecast.csv' in os.listdir(file_path) \
                 and 'Yearly_forecast.csv' in os.listdir(file_path) \
@@ -301,6 +307,13 @@ for ii in range(args.itr):
             accelerator.print('mape:', mape)
             accelerator.print('mase:', mase)
             accelerator.print('owa:', owa_results)
+            with open(os.path.join(file_path, 'results.json'), 'w+') as f:
+                json.dump({
+                    'smape': smape_results,
+                    'mape': mape,
+                    'mase': mase,
+                    'owa': owa_results
+                }, f)
         else:
             accelerator.print('After all 6 tasks are finished, you can calculate the averaged performance')
 
